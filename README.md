@@ -8,7 +8,11 @@ If interest in my thoughts to solve this problem please read the following post 
 
 https://www.johncanessa.com/2020/12/12/largest-triple-products/
 
-Keep on reading and experiemnting;
+I generated an updated post which you may find at:
+
+https://www.johncanessa.com/2021/03/09/largest-triple-products-revisited/
+
+Keep on reading and experimenting;
 It is the best way to learn.
 
 Enjoy;
