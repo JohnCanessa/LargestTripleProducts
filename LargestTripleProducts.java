@@ -39,7 +39,7 @@ public class LargestTripleProducts {
         for (int i = 3; i < arr.length; i++) {
 
             // ???? ????
-            System.out.println("<<< maxVals: " + maxVals.toString());
+            System.out.println("findMaxProduct <<< maxVals: " + maxVals.toString());
 
             // **** update max values (if needed) ****
             if (arr[i] > maxVals.peek()) {
@@ -66,23 +66,34 @@ public class LargestTripleProducts {
 
     /**
      * Largest values in descending order.
+     * 
      * Utility method.
      */
     static private int[] largestValues(int[] largest, int val) {
 
-        // **** update the top three values as needed ****
+        // ???? ????
+        // System.out.println("<<< val: " + val + " largest: " + Arrays.toString(largest));
+
+        // **** update the top three values ****
         if (val > largest[0]) {
             largest[2] = largest[1];
             largest[1] = largest[0];
             largest[0] = val;
         }
+
+        // **** update the top two values ****
         else if (val > largest[1]) {
-            largest[1] = val;
             largest[2] = largest[1];
+            largest[1] = val;
         }
+
+        // **** update the top value ****
         else if (val > largest[2]) {
             largest[2] = val;
         }
+
+        // ???? ????
+        // System.out.println("<<< largest: " + Arrays.toString(largest));
 
         // **** return the top three values ****
         return largest;
@@ -102,10 +113,10 @@ public class LargestTripleProducts {
             return new int[] { -1, -1 };
 
         // **** initialization ****
-        int[] prods     = new int[arr.length];
-        prods[0]        = prods[1] = -1;
-        int prod        = arr[0] * arr[1] * arr[2];
-        prods[2]        = prod;
+        int[] prods = new int[arr.length];
+        prods[0]    = prods[1] = -1;
+        int prod    = arr[0] * arr[1] * arr[2];
+        prods[2]    = prod;
         
         // **** compute the largest three values and return them in the array ****
         int[] largest = new int[] {Integer.MIN_VALUE, Integer.MIN_VALUE, Integer.MIN_VALUE};
