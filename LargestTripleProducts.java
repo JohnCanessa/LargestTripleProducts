@@ -12,8 +12,6 @@ import java.util.Random;
  */
 public class LargestTripleProducts {
 
-    
-
 
     /**
      * Uses a priority queue.
@@ -21,8 +19,6 @@ public class LargestTripleProducts {
     static int[] findMaxProduct0(int[] arr) {
 
         // **** sanity check(s) ****
-        if (arr == null) return null;
-        if (arr.length == 0) return new int[0];
         if (arr.length == 1) return new int[] {-1};
         if (arr.length == 2) return new int[] {-1, -1};
 
@@ -66,13 +62,11 @@ public class LargestTripleProducts {
 
     /**
      * Edited previous implementation.
-     * Uses array of thee largest values.
+     * Uses array of three largest values.
      */
     static int[] findMaxProduct1(int[] arr) {
 
         // **** sanity check(s) ****
-        if (arr == null) return null;
-        if (arr.length == 0) return new int[0];
         if (arr.length == 1) return new int[] {-1};
         if (arr.length == 2) return new int[] {-1, -1};
 
@@ -87,47 +81,75 @@ public class LargestTripleProducts {
         for (int i = 0; i < 3; i++)
             largest = largestValues(largest, arr[i]);
 
-        // **** traverse array multiplying the current 3 largest entries O(n) ****
+        // **** traverse array multiplying the current 3 largest entries - O(n) ****
         for (int i = 3; i < arr.length; i++) {
 
-            // **** update the top three largest values ****
-            largest = largestValues(largest, arr[i]);
+            // **** update largest array and product ****
+            if (arr[i] > largest[0]) {
 
-            // **** generate the product of the three largest values ****
-            prods[i] = largest[0] * largest[1] * largest[2];
+                // **** update the top three largest values ****
+                largest = largestValues(largest, arr[i]);
+
+                // **** generate the product of the three largest values ****
+                prods[i] = largest[0] * largest[1] * largest[2];
+            }
+    
+            // **** use last product ****
+            else
+                prods[i] = prods[i - 1];
         }
 
         // **** return array of max products ****
         return prods;
     }
 
-    
+
     /**
-     * Largest values in descending order.
-     * 
+     * Insert val into proper place in largest array.
+     * Largest values in ascending order.
      * Utility method.
      */
     static private int[] largestValues(int[] largest, int val) {
 
-        // **** update the top three values ****
-        if (val > largest[0]) {
-            largest[2] = largest[1];
-            largest[1] = largest[0];
-            largest[0] = val;
-        }
 
-        // **** update the top two values ****
-        else if (val > largest[1]) {
-            largest[2] = largest[1];
-            largest[1] = val;
-        }
+        // // **** update the top three values ****
+        // if (val > largest[0]) {
+        //     largest[2] = largest[1];
+        //     largest[1] = largest[0];
+        //     largest[0] = val;
+        // }
 
-        // **** update the top value ****
-        else if (val > largest[2]) {
+        // // **** update the top two values ****
+        // else if (val > largest[1]) {
+        //     largest[2] = largest[1];
+        //     largest[1] = val;
+        // }
+
+        // // **** update the top value ****
+        // else if (val > largest[2]) {
+        //     largest[2] = val;
+        // }
+
+
+        // **** update three entries ****
+        if (val > largest[2]) {
+            largest[0] = largest[1];
+            largest[1] = largest[2];
             largest[2] = val;
         }
 
-        // **** return the top three values ****
+        // **** update two entries ****
+        else if (val > largest[1]) {
+            largest[0] = largest[1];
+            largest[1] = val;
+        } 
+
+        // **** update one entry ****
+        else if (val > largest[0]) {
+            largest[0] = val;
+        }
+
+        // **** return the sorted largest values ****
         return largest;
     }
 
@@ -138,8 +160,6 @@ public class LargestTripleProducts {
     static int[] findMaxProduct2(int[] arr) {
 
         // **** sanity check(s) ****
-        if (arr == null) return null;
-        if (arr.length == 0) return new int[] {};
         if (arr.length == 1) return new int[] { -1 };
         if (arr.length == 2) return new int[] { -1, -1 };
 
@@ -149,41 +169,41 @@ public class LargestTripleProducts {
         int prod    = arr[0] * arr[1] * arr[2];
         prods[2]    = prod;
 
-        int[] tops  = new int[]{ arr[0], arr[1], arr[2]};
+        int[] largests  = new int[]{ arr[0], arr[1], arr[2]};
 
-        // **** sort tops array - O(3 log(3)) ****
-        Arrays.sort(tops);
+        // **** sort largests array - O(3 log(3)) ****
+        Arrays.sort(largests);
 
         // **** process array - O(n) ****
         for (var i = 3; i < arr.length; i++) {
 
             // **** skip this arr entry ****
-            for ( ; i < arr.length && arr[i] < tops[0]; i++)
+            for ( ; i < arr.length && arr[i] < largests[0]; i++)
                 prods[i] = prods[i - 1];
 
             // **** check if done processing arr ****
             if (i >= arr.length) break;
 
-            // **** update all three entries ****
-            if (arr[i] > tops[2]) {
-                tops[0] = tops[1];
-                tops[1] = tops[2];
-                tops[2] = arr[i];
+            // **** update three entries ****
+            if (arr[i] > largests[2]) {
+                largests[0] = largests[1];
+                largests[1] = largests[2];
+                largests[2] = arr[i];
             }
 
             // **** update two entries ****
-            else if (arr[i] > tops[1]) {
-                tops[0] = tops[1];
-                tops[1] = arr[i];
+            else if (arr[i] > largests[1]) {
+                largests[0] = largests[1];
+                largests[1] = arr[i];
             }
 
             // **** update one entry ****
-            else if (arr[i] > tops[0]) {
-                tops[0] = arr[i];
+            else if (arr[i] > largests[0]) {
+                largests[0] = arr[i];
             }
 
-            // **** compute and save product ****
-            prods[i] = tops[0] * tops[1] * tops[2];
+            // **** update product ****
+            prods[i] = largests[0] * largests[1] * largests[2];
         }
 
         // **** return array of max products ****
@@ -199,8 +219,6 @@ public class LargestTripleProducts {
     static int[] findMaxProduct3(int[] arr) {
 
         // **** sanity check(s) ****
-        if (arr == null) return null;
-        if (arr.length == 0) return new int[0];
         if (arr.length == 1) return new int[] {-1};
         if (arr.length == 2) return new int[] {-1, -1};
     
@@ -276,7 +294,7 @@ public class LargestTripleProducts {
             Random rand = new Random();
 
             // **** generate n ****
-            int n = rand.nextInt(100000);
+            int n = 1 + rand.nextInt(100000);
 
             // ???? ????
             System.out.println("main <<<               n: " + n);
@@ -286,7 +304,7 @@ public class LargestTripleProducts {
 
             // **** populate arr ****
             for (var i = 0; i < n; i++)
-                arr[i] = rand.nextInt(1000);
+                arr[i] = 1 + rand.nextInt(1000);
         } else {
 
             // **** create integer arr from string values ****
@@ -297,7 +315,7 @@ public class LargestTripleProducts {
 
         // **** short arrays ****
         if (arr.length < 16) {
-            System.out.println("main <<<     arr: " + Arrays.toString(arr));
+            System.out.println("main <<<             arr: " + Arrays.toString(arr));
 
             // **** find the max products and display result (take 1) ****
             System.out.println("main <<< findMaxProduct0: " + Arrays.toString(findMaxProduct0(arr)));
@@ -315,7 +333,7 @@ public class LargestTripleProducts {
             // **** ****
             for (var i = 0; i < 4; i++) {
 
-                // **** start timer ****
+                // **** start time ****
                 long start = System.currentTimeMillis();
 
                 // **** call function of interest ****
@@ -342,15 +360,12 @@ public class LargestTripleProducts {
                     break;
                 }
 
-                // **** stop timer ****
+                // **** end time ****
                 long end = System.currentTimeMillis();
 
                 // **** display execution time ****
                 System.out.println("main <<< findMaxProduct" + i + ": " + (end - start) + " ms");
             }
         }
-
-
-
     }
 }
